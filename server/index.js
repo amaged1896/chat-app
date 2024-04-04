@@ -1,11 +1,26 @@
-import { createServer } from 'http';
+import express from 'express';
 import { Server } from 'socket.io';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
-const httpServer = createServer();
+// dirname not working in ES6 modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-const io = new Server(httpServer, {
+
+const PORT = process.env.PORT || 3500;
+const app = express();
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+const expressServer = app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
+
+const io = new Server(expressServer, {
+    // that allows the socket to be used by any origin or only by the specified origin
     cors: {
-        origin: "*"
+        origin: '*'
     }
 });
 
@@ -19,6 +34,3 @@ io.on('connection', (socket) => {
     });
 });
 
-httpServer.listen(3500, () => {
-    console.log('Server is running on port 3500');
-});
