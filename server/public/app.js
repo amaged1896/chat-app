@@ -1,4 +1,4 @@
-const socket = io('ws://localhost:3500');
+const socket = io('https://io-project.onrender.com');
 const msgInput = document.querySelector('#message');
 const nameInput = document.querySelector('#name');
 const chatRoom = document.querySelector('#room');
@@ -30,12 +30,12 @@ function enterRoom(e) {
 }
 
 document.querySelector('.form-msg')
-    .addEventListener('submit', sendMessage);
+    ?.addEventListener('submit', sendMessage);
 
 document.querySelector('.form-join')
-    .addEventListener('submit', enterRoom);
+    ?.addEventListener('submit', enterRoom);
 
-msgInput.addEventListener('keypress', () => {
+msgInput?.addEventListener('keypress', () => {
     socket.emit('activity', nameInput.value);
 });
 
